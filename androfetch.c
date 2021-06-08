@@ -7,8 +7,8 @@ License under MIT
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include<errno.h>
-#include<sys/utsname.h>
+#include <errno.h>
+#include <sys/utsname.h>
 
 int main(void) {
 
@@ -64,7 +64,7 @@ int main(void) {
   printf("   \033[38;2;97;175;239m%s\033[0m@\033[38;2;97;175;239m%s\033[0m\n   -----------------\n"
 ,buf, hostname);
   system("printf ' \033[38;2;97;175;239mDevice\033[0m : ' && getprop ro.product.model");
-  system("printf ' \033[38;2;97;175;239mVersion\033[0m : ' && getprop ro.build.version.release");
+  system("printf ' \033[38;2;97;175;239mVersion\033[0m : ' && printf 'Android ' && getprop ro.build.version.release");
   printf(" \033[38;2;97;175;239mArch\033[0m :  %s\n", buf1.machine);
   system("printf ' \033[38;2;97;175;239mShell\033[0m : ' && printf $(basename $SHELL)");
   system("echo && printf ' \033[38;2;97;175;239mPackages\033[0m : ' && dpkg -l | wc -l");
