@@ -8,13 +8,12 @@ SOURCES=androfetch.c
 build:
 	$(CC) $(SOURCES) -o $(TARGET)
 
-install:
-	$(CC) $(SOURCES) -o $(TARGET)
+install: build
 	cp $(TARGET) /data/data/com.termux/files/usr/bin
 	mkdir -p /data/data/com.termux/files/usr/share/androfetch
 	cp LICENSE /data/data/com.termux/files/usr/share/androfetch
 
-all: build install
+all: install
 
 purge: clean
 	rm -f $(TARGET)
