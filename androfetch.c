@@ -1,6 +1,7 @@
 /*
-Program Name androfetch
+Program name androfetch
 Written by ABHacker Official
+Version tag 1.2.4
 License under MIT
 */
 
@@ -8,6 +9,7 @@ License under MIT
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <sys/ioctl.h>
 #include <sys/utsname.h>
 
 int main(void) {
@@ -47,6 +49,9 @@ int main(void) {
 
    }
 
+   struct winsize w;
+   ioctl(0, TIOCGWINSZ, &w);
+
    // include cpu file here.
    double cpu;
    FILE *fptr;
@@ -65,7 +70,7 @@ int main(void) {
 ,buf, hostname);
   system("printf ' \033[38;2;97;175;239mDevice\033[0m : ' && getprop ro.product.model");
   system("printf ' \033[38;2;97;175;239mVersion\033[0m : ' && printf 'Android ' && getprop ro.build.version.release");
-  printf(" \033[38;2;97;175;239mArch\033[0m :  %s\n", buf1.machine);
+  printf(" \033[38;2;97;175;239mArch\033[0m : %s\n", buf1.machine);
   system("printf ' \033[38;2;97;175;239mShell\033[0m : ' && printf $(basename $SHELL)");
   system("echo && printf ' \033[38;2;97;175;239mPackages\033[0m : ' && dpkg -l | wc -l");
   system("printf ' \033[38;2;97;175;239mRom\033[0m : ' && getprop ro.build.display.id");
@@ -77,7 +82,9 @@ int main(void) {
   // system("echo && printf ' \033[38;2;97;175;239mCpu freq\033[0m : ' && printf 'max ' && cat /sys/devices/system/cpu/cpufreq/policy6/cpuinfo_max_freq");
 
   system("printf ' \033[38;2;97;175;239mMemory\033[0m : ' && free -m | awk NR==2 | awk '{printf $3}' && printf 'Mib / ' && free -m | awk NR==2 | awk '{printf $2}' && printf 'Mib'");
+  system("echo && printf ' \033[38;2;97;175;239mDisk space\033[0m : ' && df -h | grep /dev/fuse | awk NR==1 | awk '{printf $2}' && printf ' / ' && df -h | grep /dev/fuse | awk NR==1 | awk '{printf $3}' && printf ' (' && df -h | grep /dev/fuse | awk NR==1 | awk '{printf $5}' && printf ')'");
   system("echo && printf ' \033[38;2;97;175;239mUptime\033[0m : ' && uptime -p | cut -c 4-");
+  printf(" \033[38;2;97;175;239mTerm size\033[0m : %dx%d\n", w.ws_row, w.ws_col);
 
 int a=0, b=0;
 
