@@ -51,7 +51,7 @@ int main(void) {
    double cpu;
    FILE *fptr;
 
-   fptr = fopen("/sys/devices/system/cpu/cpufreq/policy6/cpuinfo_max_freq", "r");
+   fptr = fopen("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq", "r");
 
     // read the cpu file
    fscanf(fptr,"%lf", &cpu);
