@@ -71,7 +71,7 @@ int main(void) {
   system("printf ' \033[38;2;97;175;239mRom\033[0m : ' && getprop ro.build.display.id");
   printf(" \033[38;2;97;175;239mKernel\033[0m : %s\n", buf1.release);
   system("printf ' \033[38;2;97;175;239mCpu\033[0m : ' && cat /proc/cpuinfo | grep 'Hardware' | awk '{printf $3 $4 $5 $6}' | sed 's/,/, /g' && printf ' core (' && cat /proc/cpuinfo | grep 'CPU architecture' | awk NR==1 | awk '{printf $3}' && printf ')'");
-  printf("\n \033[38;2;97;175;239mCpu freq\033[0m : %f GHz\n",(cpu/1000* 0.100*0.1*0.1));
+  printf("\n \033[38;2;97;175;239mCpu freq\033[0m : %.f GHz\n",(cpu/1000* 0.100*0.1*0.1));
   fclose(fptr);
 
   // system("echo && printf ' \033[38;2;97;175;239mCpu freq\033[0m : ' && printf 'max ' && cat /sys/devices/system/cpu/cpufreq/policy6/cpuinfo_max_freq");
