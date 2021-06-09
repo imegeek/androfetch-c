@@ -78,6 +78,27 @@ int main(void) {
 
   system("printf ' \033[38;2;97;175;239mMemory\033[0m : ' && free -m | awk NR==2 | awk '{printf $3}' && printf 'Mib / ' && free -m | awk NR==2 | awk '{printf $2}' && printf 'Mib'");
   system("echo && printf ' \033[38;2;97;175;239mUptime\033[0m : ' && uptime -p | cut -c 4-");
+
+int a=0, b=0;
+
+    printf(" \033[38;2;97;175;239mTerm colors\033[0m :  ");
+    for (; a <= 7;)
+    {
+        printf( "\033[3%dm▄▄", a);
+        a=a+1;
+        if (a==8)
+        {
+            printf("\n\t\t");
+           // break;
+            for (; b<=7;)
+            {
+                printf( "\033[9%dm▀▀", b);
+                b=b+1;
+            }
+            printf("\n");
+            break;
+        }
+    }
 #else
 
     printf("Sorry, the system are not listed above.\n");
