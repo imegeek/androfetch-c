@@ -5,8 +5,7 @@
   <img src="/images/preview.png" alt="Preview" />
 </h1>
 
-**Install for Termux**
-
+> **[`Install Command`](#)**
 ```
 make install
 ```

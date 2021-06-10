@@ -1,7 +1,7 @@
 /*
 Program name androfetch
 Written by ABHacker Official
-Version tag 1.2.4
+Version tag 1.2.5
 License under MIT
 */
 
@@ -82,7 +82,7 @@ int main(void) {
   // system("echo && printf ' \033[38;2;97;175;239mCpu freq\033[0m : ' && printf 'max ' && cat /sys/devices/system/cpu/cpufreq/policy6/cpuinfo_max_freq");
 
   system("printf ' \033[38;2;97;175;239mMemory\033[0m : ' && free -m | awk NR==2 | awk '{printf $3}' && printf 'Mib / ' && free -m | awk NR==2 | awk '{printf $2}' && printf 'Mib'");
-  system("echo && printf ' \033[38;2;97;175;239mDisk space\033[0m : ' && df -h | grep /dev/fuse | awk NR==1 | awk '{printf $2}' && printf ' / ' && df -h | grep /dev/fuse | awk NR==1 | awk '{printf $3}' && printf ' (' && df -h | grep /dev/fuse | awk NR==1 | awk '{printf $5}' && printf ')'");
+  system("echo && printf ' \033[38;2;97;175;239mDisk space\033[0m : ' && df -h | grep /data | awk NR==1 | awk '{printf $2}' && printf ' / ' && df -h | grep /data | awk NR==1 | awk '{printf $3}' && printf ' (' && df -h | grep /data | awk NR==1 | awk '{printf $5}' && printf ')'");
   system("echo && printf ' \033[38;2;97;175;239mUptime\033[0m : ' && uptime -p | cut -c 4-");
   printf(" \033[38;2;97;175;239mTerm size\033[0m : %dx%d\n", w.ws_row, w.ws_col);
 
