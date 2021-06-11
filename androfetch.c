@@ -1,7 +1,7 @@
 /*
 Program name androfetch
 Written by ABHacker Official
-Version tag 1.2.5
+Version tag 1.2.6
 License under MIT
 */
 
@@ -12,30 +12,20 @@ License under MIT
 #include <sys/ioctl.h>
 #include <sys/utsname.h>
 
-int main(void) {
+void logo();
+int main(int argc, char *argv[] ) {
 
 #if __ANDROID__
-  const char * Art[] = {
-"\033[1;38;2;129;175;239m",
-"      ╲ ▁▂▂▂▁ ╱",
-"      ▄███████▄",
-"     ▄██ ███ ██▄",
-"    ▄███████████▄",
-" ▄█ ▄▄▄▄▄▄▄▄▄▄▄▄▄ █▄",
-" ██ █████████████ ██",
-" ██ █████████████ ██",
-" ██ █████████████ ██",
-" ██ █████████████ ██",
-"    █████████████",
-"     ███████████",
-"      ██     ██",
-"      ██     ██\033[0m\n"
-    };
-    for (int i = 0; i < sizeof(Art) / sizeof(Art[0]); ++i) {
-        puts(Art[i]);
-    }
 
-    struct utsname buf1;
+  if(argc < 2)
+  {
+    logo();
+  }
+  else if (strcmp(argv[1], "--stdout")==0)
+  {
+
+  }
+  struct utsname buf1;
 
    errno =0;
 
@@ -86,6 +76,8 @@ int main(void) {
   system("echo && printf ' \033[38;2;97;175;239mUptime\033[0m : ' && uptime -p | cut -c 4-");
   printf(" \033[38;2;97;175;239mTerm size\033[0m : %dx%d\n", w.ws_row, w.ws_col);
 
+  if(argc < 2)
+  {
 int a=0, b=0;
 
     printf(" \033[38;2;97;175;239mTerm colors\033[0m :  ");
@@ -106,6 +98,7 @@ int a=0, b=0;
             break;
         }
     }
+  }
 #else
 
     printf("Sorry, the system are not listed above.\n");
@@ -113,3 +106,24 @@ int a=0, b=0;
   return EXIT_SUCCESS;
 }
 
+void logo()
+{
+  const char * Art[] = {
+"\033[1;38;2;129;175;239m",
+"      ╲ ▁▂▂▂▁ ╱",
+"      ▄███████▄",
+"     ▄██ ███ ██▄",                                                   "    ▄███████████▄",
+" ▄█ ▄▄▄▄▄▄▄▄▄▄▄▄▄ █▄",
+" ██ █████████████ ██",
+" ██ █████████████ ██",
+" ██ █████████████ ██",
+" ██ █████████████ ██",
+"    █████████████",
+"     ███████████",
+"      ██     ██",
+"      ██     ██\033[0m\n"
+    };
+    for (int i = 0; i < sizeof(Art) / sizeof(Art[0]); ++i) {
+        puts(Art[i]);
+    }
+}

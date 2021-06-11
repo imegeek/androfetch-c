@@ -9,3 +9,8 @@
 ```
 make install
 ```
+> **[`Program Usage`](#)**
+```
+androfetch
+androfetch --sdout
+```
