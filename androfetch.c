@@ -1,22 +1,23 @@
 /*
 Program name androfetch
 Written by ABHacker Official
-Version tag 1.2.8
+Version tag 1.3.0
 License under MIT
 */
+
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
 #include <sys/ioctl.h>
+#include <sys/sysinfo.h>
+#include <sys/statvfs.h>
 #include <sys/utsname.h>
 
 void logo();
 int main(int argc, char *argv[] ) {
-  //char *an = argv[1];
-
-#if __ANDROID__
+  #if __ANDROID__
 
   if(argc > 1 && (strcmp(argv[1],"--stdout") == 0))
   {
@@ -26,7 +27,14 @@ int main(int argc, char *argv[] ) {
   else {
     logo();
   }
+
+
+
+  struct sysinfo info;
+    long total_ram = sysconf(_SC_PAGESIZE);
+    long free_ram = (info.totalram/1024/1024/1024);
   struct utsname buf1;
+  struct statvfs buf2;
 
    errno =0;
 
@@ -84,15 +92,36 @@ int main(int argc, char *argv[] ) {
   printf("\n \033[38;2;97;175;239mCpu freq\033[0m : %.f GHz\n",(cpu/1000* 0.100*0.1*0.1));
   fclose(fptr);
 
-  // system("echo && printf ' \033[38;2;97;175;239mCpu freq\033[0m : ' && printf 'max ' && cat /sys/devices/system/cpu/cpufreq/policy6/cpuinfo_max_freq");
+ //system("printf ' \033[38;2;97;175;239mMemory\033[0m : '");
+ // system("free -m | awk NR==2 | awk '{printf $3}' && printf 'Mib / ' && free -m | awk NR==2 | awk '{printf $2}' && printf 'Mib'");
 
-  system("printf ' \033[38;2;97;175;239mMemory\033[0m : '");
-  system("free -m | awk NR==2 | awk '{printf $3}' && printf 'Mib / ' && free -m | awk NR==2 | awk '{printf $2}' && printf 'Mib'");
+  printf(" \033[38;2;97;175;239mMemory :\033[0m %ldMib / %ldMib\n", total_ram, total_ram-free_ram);
 
-  system("echo && printf ' \033[38;2;97;175;239mDisk space\033[0m : '");
-  system("df -h | grep /data | awk NR==1 | awk '{printf $2}' && printf ' / ' && df -h | grep /data | awk NR==1 | awk '{printf $3}' && printf ' (' && df -h | grep /data | awk NR==1 | awk '{printf $5}' && printf ')'");
+system("df > space1024.db");
+char *filename = "space1024.db";
+if (!statvfs(filename, &buf2)) {
 
-  system("echo && printf ' \033[38;2;97;175;239mUptime\033[0m : '");
+  unsigned long free, disk, used, percent, blksize, blocks, freeblks, disk_size, used_size, free_size;
+
+blksize = buf2.f_bsize;
+blocks = buf2.f_blocks;
+freeblks = buf2.f_bfree;
+
+disk_size = blocks * blksize;
+free_size = freeblks * blksize;
+used_size = disk_size - free_size;
+
+used = used_size/1024/1024/1024;                                            disk = disk_size/1024/1024/1024;
+free = free_size/1024/1024/1024;                                            percent = used*100/disk;
+                                                                            printf(" \033[38;2;97;175;239mDisk space\033[0m : %luG / %luG (%lu%%)\n", disk, used, percent);                                                         remove("space1024.db");
+}                                                                           
+else {                                                                      printf("Couldn't get file system statistics\n");
+}
+
+ /* system("printf ' \033[38;2;97;175;239mDisk space\033[0m : '");
+  system("df -h | grep /data | awk NR==1 | awk '{printf $2}' && printf ' / ' && df -h | grep /data | awk NR==1 | awk '{printf $3}' && printf ' (' && df -h | grep /data | awk NR==1 | awk '{printf $5}' && printf ')'");*/
+
+  system("printf ' \033[38;2;97;175;239mUptime\033[0m : '");
   system("uptime -p | cut -c 4-");
 
   printf(" \033[38;2;97;175;239mTerm size\033[0m : %dx%d\n", w.ws_row, w.ws_col);
