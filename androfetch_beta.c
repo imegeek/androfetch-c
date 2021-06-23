@@ -1,7 +1,7 @@
 /*
 Program name androfetch
 Written by ABHacker Official
-Version tag 1.2.8
+Version tag 0.99
 License under MIT
 */
 
@@ -17,15 +17,6 @@ int main(int argc, char *argv[] ) {
   //char *an = argv[1];
 
 #if __ANDROID__
-
-  if(argc > 1 && (strcmp(argv[1],"--stdout") == 0))
-  {
-    NULL;
-  }
-
-  else {
-    logo();
-  }
   struct utsname buf1;
 
    errno =0;
@@ -57,6 +48,52 @@ int main(int argc, char *argv[] ) {
   buf=getlogin();
   gethostname(hostname, HOST_NAME_MAX + 1);
 
+  if(argc > 1 && (strcmp(argv[1],"--stdout") == 0))
+  {
+  printf("%s@%s\n-----------------\n"
+,buf, hostname);
+  system("printf 'Device : '");
+  system("getprop ro.product.model");
+
+  system("printf 'Version : '");
+  system("printf 'Android ' && getprop ro.build.version.release");
+
+  printf("Arch : %s\n", buf1.machine);
+
+  system("printf 'Shell : '");
+  system("printf $(basename $SHELL)");
+
+  system("echo && printf 'Packages : '");
+  system("dpkg -l | wc -l");
+
+  system("printf 'Rom : '");
+  system("getprop ro.build.display.id");
+
+  printf("Kernel : %s\n", buf1.release);
+
+  system("printf 'Cpu : '");
+  system("cat /proc/cpuinfo | grep 'Hardware' | awk '{printf $3 $4 $5 $6}' | sed 's/,/, /g' && printf ' core (' && cat /proc/cpuinfo | grep 'CPU architecture' | awk NR==1 | awk '{printf $3}' && printf ')'");
+
+  printf("\nCpu freq : %.f GHz\n",(cpu/1000* 0.100*0.1*0.1));
+  fclose(fptr);
+
+  // system("echo && printf ' \033[38;2;97;175;239mCpu freq\033[0m : ' && printf 'max ' && cat /sys/devices/system/cpu/cpufreq/policy6/cpuinfo_max_freq");
+
+  system("printf 'Memory : '");
+  system("free -m | awk NR==2 | awk '{printf $3}' && printf 'Mib / ' && free -m | awk NR==2 | awk '{printf $2}' && printf 'Mib'");
+
+  system("echo && printf 'Disk space\033[0m : '");
+  system("df -h | grep /data | awk NR==1 | awk '{printf $2}' && printf ' / ' && df -h | grep /data | awk NR==1 | awk '{printf $3}' && printf ' (' && df -h | grep /data | awk NR==1 | awk '{printf $5}' && printf ')'");
+
+  system("echo && printf 'Uptime : '");
+  system("uptime -p | cut -c 4-");
+
+  printf("Term size : %dx%d\n\n", w.ws_row, w.ws_col); 
+  }
+
+  else
+  {
+    logo();
   printf("   \033[38;2;97;175;239m%s\033[0m@\033[38;2;97;175;239m%s\033[0m\n   -----------------\n"
 ,buf, hostname);
   system("printf ' \033[38;2;97;175;239mDevice\033[0m : '");
@@ -119,6 +156,7 @@ int a=0, b=0;
             break;
         }
     }
+  }
   }
 #else
 
