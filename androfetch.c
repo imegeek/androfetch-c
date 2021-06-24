@@ -92,10 +92,10 @@ int main(int argc, char *argv[] ) {
   printf("\n \033[38;2;97;175;239mCpu freq\033[0m : %.f GHz\n",(cpu/1000* 0.100*0.1*0.1));
   fclose(fptr);
 
- //system("printf ' \033[38;2;97;175;239mMemory\033[0m : '");
- // system("free -m | awk NR==2 | awk '{printf $3}' && printf 'Mib / ' && free -m | awk NR==2 | awk '{printf $2}' && printf 'Mib'");
+ system("printf ' \033[38;2;97;175;239mMemory\033[0m : '");
+ system("free -m | awk NR==2 | awk '{printf $3}' && printf 'Mib / ' && free -m | awk NR==2 | awk '{printf $2}' && printf 'Mib'");
 
-  printf(" \033[38;2;97;175;239mMemory :\033[0m %ldMib / %ldMib\n", total_ram, total_ram-free_ram);
+/*  printf(" \033[38;2;97;175;239mMemory :\033[0m %ldMib / %ldMib\n", total_ram, total_ram-free_ram);
 
 system("df > space1024.db");
 char *filename = "space1024.db";
@@ -116,12 +116,12 @@ free = free_size/1024/1024/1024;                                            perc
                                                                             printf(" \033[38;2;97;175;239mDisk space\033[0m : %luG / %luG (%lu%%)\n", disk, used, percent);                                                         remove("space1024.db");
 }                                                                           
 else {                                                                      printf("Couldn't get file system statistics\n");
-}
+}*/
 
- /* system("printf ' \033[38;2;97;175;239mDisk space\033[0m : '");
+/*  system("printf ' \033[38;2;97;175;239mDisk space\033[0m : '");
   system("df -h | grep /data | awk NR==1 | awk '{printf $2}' && printf ' / ' && df -h | grep /data | awk NR==1 | awk '{printf $3}' && printf ' (' && df -h | grep /data | awk NR==1 | awk '{printf $5}' && printf ')'");*/
 
-  system("printf ' \033[38;2;97;175;239mUptime\033[0m : '");
+  system("echo && printf ' \033[38;2;97;175;239mUptime\033[0m : '");
   system("uptime -p | cut -c 4-");
 
   printf(" \033[38;2;97;175;239mTerm size\033[0m : %dx%d\n", w.ws_row, w.ws_col);
