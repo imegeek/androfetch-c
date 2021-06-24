@@ -1,4 +1,4 @@
-> # androfetchC
+> ## androfetch-c
 **A System Fetching Program written in C.**
 
 <h1 align="center">
@@ -12,5 +12,5 @@ make install
 > **[`Program Usage`](#)**
 ```
 androfetch
-androfetch --sdout
+androfetch --stdout
 ```
