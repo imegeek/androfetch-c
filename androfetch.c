@@ -1,7 +1,7 @@
 /*
 Program name androfetch
 Written by ABHacker Official
-Version tag 1.3.0
+Version tag 1.3.1
 License under MIT
 */
 
@@ -29,6 +29,8 @@ int main(int argc, char *argv[] ) {
   }
 
 
+  int real = getuid();
+  int euid = geteuid();
 
   struct sysinfo info;
     long total_ram = sysconf(_SC_PAGESIZE);
@@ -124,11 +126,33 @@ else {                                                                      prin
   system("echo && printf ' \033[38;2;97;175;239mUptime\033[0m : '");
   system("uptime -p | cut -c 4-");
 
+  if ( real == 0 )
+  {
+    printf(" \033[38;2;97;175;239mUser\033[0m : (root user)\n");
+  }
+  else if ( euid == 0 )
+  {
+    printf(" \033[38;2;97;175;239mUser\033[0m : (root user)\n");
+  }
+
+  else
+  {
+  printf(" \033[38;2;97;175;239mUser\033[0m : non (root user)\n");
+  }
+
   printf(" \033[38;2;97;175;239mTerm size\033[0m : %dx%d\n", w.ws_row, w.ws_col);
 
-  if(argc < 2)
+  if(argc > 1 && (strcmp(argv[1],"--compact") == 0))
   {
-int a=0, b=0;
+    NULL;
+  }
+
+  else if(argc > 1 && (strcmp(argv[1],"--stdout") == 0))
+  {
+    NULL;
+  }
+  else {
+  int a=0, b=0;
 
     printf(" \033[38;2;97;175;239mTerm colors\033[0m :  ");
     for (; a <= 7;)

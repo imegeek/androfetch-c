@@ -13,4 +13,5 @@ make install
 ```
 androfetch
 androfetch --stdout
+androfetch --compact
 ```
