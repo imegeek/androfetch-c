@@ -1,7 +1,7 @@
 /*
 Program name androfetch
 Written by ABHacker Official
-Version tag 1.3.1
+Version tag 1.3.2
 License under MIT
 */
 
@@ -95,7 +95,7 @@ int main(int argc, char *argv[] ) {
   fclose(fptr);
 
  system("printf ' \033[38;2;97;175;239mMemory\033[0m : '");
- system("free -m | awk NR==2 | awk '{printf $3}' && printf 'Mib / ' && free -m | awk NR==2 | awk '{printf $2}' && printf 'Mib'");
+ system("free_ram=$(free -m | awk NR==2 | awk '{printf $3}') && total_ram=$(free -m | awk NR==2 | awk '{printf $2}') && printf \"${free_ram}Mib / ${total_ram}Mib\"  && printf \" ($((free_ram*100/total_ram))%%)\n\"");
 
 /*  printf(" \033[38;2;97;175;239mMemory :\033[0m %ldMib / %ldMib\n", total_ram, total_ram-free_ram);
 
@@ -120,8 +120,8 @@ free = free_size/1024/1024/1024;                                            perc
 else {                                                                      printf("Couldn't get file system statistics\n");
 }*/
 
-/*  system("printf ' \033[38;2;97;175;239mDisk space\033[0m : '");
-  system("df -h | grep /data | awk NR==1 | awk '{printf $2}' && printf ' / ' && df -h | grep /data | awk NR==1 | awk '{printf $3}' && printf ' (' && df -h | grep /data | awk NR==1 | awk '{printf $5}' && printf ')'");*/
+  system("printf ' \033[38;2;97;175;239mDisk space\033[0m : '");
+  system("df -h | grep /data | awk NR==1 | awk '{printf $2}' && printf ' / ' && df -h | grep /data | awk NR==1 | awk '{printf $3}' && printf ' (' && df -h | grep /data | awk NR==1 | awk '{printf $5}' && printf ')'");
 
   system("echo && printf ' \033[38;2;97;175;239mUptime\033[0m : '");
   system("uptime -p | cut -c 4-");
