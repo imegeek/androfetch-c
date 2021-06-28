@@ -186,7 +186,7 @@ disk = disk_size/1024/1024/1024;
 free = free_size/1024/1024/1024;
 percent = used*100/disk;
 
-printf(" \033[38;2;97;175;239mDisk space\033[0m : %.1fG / %.1fG (%lu%%)\n", disk, used, (long)percent);
+printf(" \033[38;2;97;175;239mDisk space\033[0m : %.1fG / %.1fG (%lu%%)\n", used, disk, (long)percent);
 remove("space1024.db");
 }
 else {                                                                      printf("Couldn't get file system statistics\n");
