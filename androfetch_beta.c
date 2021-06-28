@@ -186,3 +186,20 @@ void logo()
         puts(Art[i]);
     }
 }
+
+
+/*void ram()
+{
+
+  struct sysinfo info;
+
+    long total_ram = sysconf(_SC_PAGESIZE);
+    long free_ram = (info.totalram/1024/1024/1024);
+    printf(" \033[38;2;97;175;239mMemory :\033[0m %ldMib / %ldMib\n", total_ram, total_ram-free_ram);
+}
+
+void space()
+{
+  system("printf ' \033[38;2;97;175;239mDisk space\033[0m : '");
+  system("df -h | grep /data | awk NR==1 | awk '{printf $2}' && printf ' / ' && df -h | grep /data | awk NR==1 | awk '{printf $3}' && printf ' (' && df -h | grep /data | awk NR==1 | awk '{printf $5}' && printf ')'");
+}*/
