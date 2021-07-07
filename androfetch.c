@@ -1,7 +1,7 @@
 /*
 Program name androfetch
 Written by ABHacker Official
-Version tag 1.3.6
+Version tag 1.4.0
 License under MIT
 */
 
@@ -9,15 +9,56 @@ License under MIT
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <time.h>
 #include <sys/ioctl.h>
 #include <sys/sysinfo.h>
 #include <sys/statvfs.h>
 #include <sys/utsname.h>
 
+int randS(int num_count)
+{
+
+srand(time(0));
+  int num = (rand() % (num_count - 1 + 1)) + 1;
+  return num;
+}
+
+int rand_colors(int a)
+{
+
+  int num=randS(6);
+  if (num == 1)
+  {
+    printf("\033[%d;38;2;129;175;239m", a);
+  }
+  else if (num == 2)
+  {
+    printf("\e[%d;38;2;224;108;117m", a);
+  }
+  else if (num == 3)
+  {
+    printf("\e[%d;38;2;152;195;121m", a);
+  }
+  else if (num == 4)
+  {
+    printf("\e[%d;38;2;229;192;123m", a);
+  }
+  else if (num == 5)
+  {
+    printf("\e[%d;38;2;198;120;221m", a);
+  }
+  else if (num == 6)
+  {
+    printf("\e[%d;38;2;255;255;255m", a);
+  }
+  return 0;
+}
+
 void logo()
 {
+  rand_colors(1);
   const char * Art[] = {
-"\033[1;38;2;129;175;239m",
+"",
 "      ╲ ▁▂▂▂▁ ╱",
 "      ▄███████▄",
 "     ▄██ ███ ██▄",                                                   "    ▄███████████▄",
@@ -36,36 +77,62 @@ void logo()
     }
 }
 
+
+int programS(char* command, char *name, char *exp)
+{
+
+  rand_colors(0);
+
+  FILE *program;
+  char cmd[1024];
+
+  /* Open the command for reading. */
+  program = popen(command, "r");
+  if (program == NULL) {
+    exit(1);
+  }
+
+  /* Read the output a line at a time - output it. */
+  while (fgets(cmd, sizeof(cmd), program) != NULL) {
+    printf("%s%s\033[0m : %s",exp, name, cmd);
+  }
+
+  pclose(program);
+  return 0;
+}
+
+
 void host()
 {
+  rand_colors(1);
   int system(const char *command);
   char *buf, hostname[HOST_NAME_MAX + 1];
   buf=getlogin();
   gethostname(hostname, HOST_NAME_MAX + 1);
 
-    printf(" \033[38;2;97;175;239m%s\033[0m@\033[38;2;97;175;239m%s\033[0m\n -----------------\n"
-,buf, hostname);
+    printf(" %s\033[0m@", buf);
+    rand_colors(1);
+    printf("%s\033[0m\n -----------------\n", hostname);
   }
 
 void model()
 {
 
-  system("printf ' \033[38;2;97;175;239mDevice\033[0m : '");
-  system("getprop ro.product.model");
+  programS("getprop ro.product.model", "Device", " ");
 
 }
 
 void version()
 {
 
-  system("printf ' \033[38;2;97;175;239mVersion\033[0m : '");
-  system("printf 'Android ' && getprop ro.build.version.release");
+  programS("printf 'Android ' && getprop ro.build.version.release", "Version", " ");
 
 }
 
 void arch()
 {
 
+  rand_colors(0);
  struct utsname buf1;
    errno =0;
 
@@ -79,23 +146,20 @@ void arch()
 
    }
 
-  printf(" \033[38;2;97;175;239mArch\033[0m : %s\n", buf1.machine);
+  printf(" Arch\033[0m : %s", buf1.machine);
 
 }
 
 void shell()
 {
 
-  system("printf ' \033[38;2;97;175;239mShell\033[0m : '");
-  system("printf $(basename $SHELL)");
+  programS("printf $(basename $SHELL)", "Shell", "\n ");
 
 }
 
 void package()
 {
-
-  system("echo && printf ' \033[38;2;97;175;239mPackages\033[0m : '");
-  system("dpkg -l | wc -l");
+  programS("dpkg -l | wc -l", "Packages", "\n ");
 
 }
 
@@ -103,15 +167,14 @@ void package()
 void rom()
 {
 
-  system("printf ' \033[38;2;97;175;239mRom\033[0m : '");
-  system("getprop ro.build.display.id");
+  programS("getprop ro.build.display.id", "Rom", " ");
 
 }
 
 
 void kernel()
 {
-
+  rand_colors(0);
   struct utsname buf1;
    errno =0;
 
@@ -125,21 +188,21 @@ void kernel()
 
    }
 
-  printf(" \033[38;2;97;175;239mKernel\033[0m : %s\n", buf1.release);
+  printf(" Kernel\033[0m : %s\n", buf1.release);
 
 }
 
 void cpu()
 {
 
-  system("printf ' \033[38;2;97;175;239mCpu\033[0m : '");
-  system("cat /proc/cpuinfo | grep 'Hardware' | awk '{printf $3 $4 $5 $6}' | sed 's/,/, /g' && printf ' core (' && cat /proc/cpuinfo | grep 'CPU architecture' | awk NR==1 | awk '{printf $3}' && printf ')'");
+  programS("cat /proc/cpuinfo | grep 'Hardware' | awk '{printf $3 $4 $5 $6}' | sed 's/,/, /g' && printf ' core (' && cat /proc/cpuinfo | grep 'CPU architecture' | awk NR==1 | awk '{printf $3}' && printf ')'", "Cpu", " ");
 
 }
 
 void cpu_freq()
 {
 
+  rand_colors(0);
  // include cpu file here.
    double cpu;
    FILE *fptr;
@@ -149,13 +212,15 @@ void cpu_freq()
     // read the cpu file
    fscanf(fptr,"%lf", &cpu);
 
-  printf("\n \033[38;2;97;175;239mCpu freq\033[0m : %.f GHz\n",(cpu/1000* 0.100*0.1*0.1));
+  printf("\n Cpu freq\033[0m : %.f GHz\n",(cpu/1000* 0.100*0.1*0.1));
   fclose(fptr);
 
 }
 
 void memory()
 {
+
+  rand_colors(0);
   struct sysinfo sys_info;
 
   if(sysinfo(&sys_info) != 0)
@@ -167,12 +232,12 @@ void memory()
  long int available_ram=(total_ram-calculate_ram);
  long int ram_percentage=(available_ram*100/total_ram);
 
-  printf(" \033[38;2;97;175;239mMemory\033[0m : %ldMib / %ldMib (%ld%%)\n", available_ram, total_ram, ram_percentage);
+  printf(" Memory\033[0m : %ldMib / %ldMib (%ld%%)\n", available_ram, total_ram, ram_percentage);
 }
 
 void disk()
 {
-
+  rand_colors(0);
   struct statvfs buf2;
 
 system("sh -c /sys/bin/df -h > space1024.db");
@@ -194,7 +259,7 @@ disk = disk_size/1024/1024/1024;
 free = free_size/1024/1024/1024;
 percent = used*100/disk;
 
-printf(" \033[38;2;97;175;239mDisk space\033[0m : %.1fG / %.1fG (%lu%%)\n", used, disk, (long)percent);
+printf(" Disk space\033[0m : %.1fG / %.1fG (%lu%%)\n", used, disk, (long)percent);
 remove("space1024.db");
 }
 else {                                                                      printf("Couldn't get file system statistics\n");
@@ -204,6 +269,8 @@ else {                                                                      prin
 
 void uptime()
 {
+
+  rand_colors(0);
   struct sysinfo sys_info;
 
   int days, hours, mins, x = 1;
@@ -215,17 +282,18 @@ void uptime()
   hours = (sys_info.uptime / 3600) - (days * 24);
   mins = (sys_info.uptime / 60) - (days * 1440) - (hours * 60);
 
-  printf(" \033[38;2;97;175;239mUptime\033[0m : %d days, %d hours, %d minutes\n",
+  printf(" Uptime\033[0m : %d days, %d hours, %d minutes\n",
   days, hours, mins);
 }
 
 void term_size()
 {
 
+  rand_colors(0);
    struct winsize w;
    ioctl(0, TIOCGWINSZ, &w);
 
-  printf(" \033[38;2;97;175;239mTerm size\033[0m : %dx%d\n", w.ws_row, w.ws_col);
+  printf(" Term size\033[0m : %dx%d\n", w.ws_row, w.ws_col);
 
 }
 
@@ -233,21 +301,22 @@ void term_size()
 void root()
 {
 
+  rand_colors(0);
   int real = getuid();
   int euid = geteuid();
 
   if ( real == 0 )
   {
-    printf(" \033[38;2;97;175;239mSu user\033[0m : (root user)\n");
+    printf(" Su user\033[0m : (root user)\n");
   }
   else if ( euid == 0 )
   {
-    printf(" \033[38;2;97;175;239mSu user\033[0m : (root user)\n");
+    printf(" Su user\033[0m : (root user)\n");
   }
 
   else
   {
-  printf(" \033[38;2;97;175;239mSu user\033[0m : non (root user)\n");
+  printf(" Su user\033[0m : non (root user)\n");
   }
 
 }
