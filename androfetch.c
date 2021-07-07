@@ -1,7 +1,7 @@
 /*
 Program name androfetch
 Written by ABHacker Official
-Version tag 1.3.4
+Version tag 1.3.6
 License under MIT
 */
 
@@ -156,10 +156,18 @@ void cpu_freq()
 
 void memory()
 {
+  struct sysinfo sys_info;
 
- system("printf ' \033[38;2;97;175;239mMemory\033[0m : '");
- system("free_ram=$(free -m | awk NR==2 | awk '{printf $3}') && total_ram=$(free -m | awk NR==2 | awk '{printf $2}') && printf \"${free_ram}Mib / ${total_ram}Mib\"  && printf \" ($((free_ram*100/total_ram))%%)\n\"");
+  if(sysinfo(&sys_info) != 0)
+    perror("sysinfo");
+ long int total_ram=sys_info.totalram/1024/1024;
+ long int free_ram=sys_info.freeram*10;
+ long int justify_ram=free_ram/1024;
+ long int calculate_ram=justify_ram/1024;
+ long int available_ram=(total_ram-calculate_ram);
+ long int ram_percentage=(available_ram*100/total_ram);
 
+  printf(" \033[38;2;97;175;239mMemory\033[0m : %ldMib / %ldMib (%ld%%)\n", available_ram, total_ram, ram_percentage);
 }
 
 void disk()
@@ -196,10 +204,19 @@ else {                                                                      prin
 
 void uptime()
 {
+  struct sysinfo sys_info;
 
-  system("printf ' \033[38;2;97;175;239mUptime\033[0m : '");
-  system("uptime -p | cut -c 4-");
+  int days, hours, mins, x = 1;
 
+  if(sysinfo(&sys_info) != 0)
+   perror("sysinfo");
+
+  days = sys_info.uptime / 86400;
+  hours = (sys_info.uptime / 3600) - (days * 24);
+  mins = (sys_info.uptime / 60) - (days * 1440) - (hours * 60);
+
+  printf(" \033[38;2;97;175;239mUptime\033[0m : %d days, %d hours, %d minutes\n",
+  days, hours, mins);
 }
 
 void term_size()
@@ -281,6 +298,16 @@ void instructions()
   term_size();
 }
 
+void help()
+{
+  printf
+    (
+     "Androfetch is a CLI system information tool written in C.\n\n"
+     "default  : \e[92mandrofetch\e[0m\n"
+     "argument : \e[92mandrofetch --stdout\e[0m\n"
+     "argument : \e[92mandrofetch --compact\e[0m\n"
+    );
+}
 int main(int argc, char *argv[] ) {
   #if __ANDROID__
 
@@ -294,6 +321,12 @@ int main(int argc, char *argv[] ) {
   {
     instructions();
   }
+
+  else if(argc > 1 && (strcmp(argv[1],"--help") == 0))
+  {
+    help();
+  }
+
   else {
     logo();
     instructions();
