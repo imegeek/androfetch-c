@@ -1,7 +1,7 @@
 /*
 Program name androfetch
 Written by ABHacker Official
-Version tag 1.4.0
+Version tag 1.4.1
 License under MIT
 */
 
@@ -26,7 +26,7 @@ srand(time(0));
 int rand_colors(int a)
 {
 
-  int num=randS(6);
+  int num=randS(7);
   if (num == 1)
   {
     printf("\033[%d;38;2;129;175;239m", a);
@@ -49,7 +49,11 @@ int rand_colors(int a)
   }
   else if (num == 6)
   {
-    printf("\e[%d;38;2;255;255;255m", a);
+    printf("\e[%d;38;2;142;200;216m", a);
+  }
+  else if (num == 7)
+  {
+    printf("\e[%d;38;2;97;175;239m", a);
   }
   return 0;
 }
